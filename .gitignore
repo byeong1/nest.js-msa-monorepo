@@ -3,6 +3,15 @@
 /node_modules
 /build
 
+# MSA - 각 서비스별 빌드 결과물
+apps/*/dist
+apps/*/build
+
+# MSA - 각 서비스별 node_modules
+apps/*/node_modules
+apps/*/package-lock.json
+apps/*/yarn.lock
+
 # Logs
 logs
 *.log
@@ -12,12 +21,21 @@ yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
 
+# MSA - 각 서비스별 로그 파일
+apps/*/*.log
+apps/*/logs
+
 # OS
 .DS_Store
+Thumbs.db
 
 # Tests
 /coverage
 /.nyc_output
+
+# MSA - 각 서비스별 테스트 커버리지
+apps/*/coverage
+apps/*/.nyc_output
 
 # IDEs and editors
 /.idea
@@ -35,16 +53,27 @@ lerna-debug.log*
 !.vscode/launch.json
 !.vscode/extensions.json
 
-# dotenv environment variable files
+# dotenv environment variable files (루트)
 .env
 .env.development.local
 .env.test.local
 .env.production.local
 .env.local
 
+# MSA - 각 서비스별 환경 변수 파일
+apps/*/.env
+apps/*/.env.*
+apps/*/env
+apps/*/config/env
+apps/*/config/.env*
+
 # temp directory
 .temp
 .tmp
+
+# MSA - 각 서비스별 임시 파일
+apps/*/.temp
+apps/*/.tmp
 
 # Runtime data
 pids
@@ -52,9 +81,69 @@ pids
 *.seed
 *.pid.lock
 
+# MSA - 각 서비스별 런타임 데이터
+apps/*/pids
+apps/*/*.pid
+apps/*/*.seed
+apps/*/*.pid.lock
+
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
-# env
+# MSA - 각 서비스별 진단 보고서
+apps/*/report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
-env
+# Database files (각 서비스가 로컬 DB 사용 시)
+apps/*/db.sqlite
+apps/*/db.sqlite3
+apps/*/*.db
+apps/*/database.json
+
+# SSL certificates (각 서비스별 인증서)
+apps/*/ssl
+apps/*/*.pem
+apps/*/*.key
+apps/*/*.crt
+
+# Docker files (각 서비스별 Docker 관련)
+apps/*/.dockerignore
+apps/*/docker-compose.override.yml
+
+# 백업 파일
+*.backup
+*.bak
+apps/*/*.backup
+apps/*/*.bak
+
+# 캐시 파일
+.cache
+.parcel-cache
+apps/*/.cache
+apps/*/.parcel-cache
+
+# 타입스크립트 빌드 정보
+*.tsbuildinfo
+apps/*/*.tsbuildinfo
+
+# ESLint 캐시
+.eslintcache
+apps/*/.eslintcache
+
+# Prettier 캐시  
+.prettiercache
+apps/*/.prettiercache
+
+# 각 서비스별 로컬 설정 파일
+apps/*/local.json
+apps/*/config/local.json
+apps/*/config/development.json
+apps/*/config/production.json
+
+# 각 서비스별 업로드 폴더
+apps/*/uploads
+apps/*/public/uploads
+apps/*/static/uploads
+
+# PM2 설정 파일 (프로덕션 배포 시)
+apps/*/ecosystem.config.js
+apps/*/pm2.config.js

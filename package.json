@@ -1,73 +1,47 @@
 {
-  "name": "nest.js-msa-monorepo",
-  "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "name": "nestjs-msa-orchestrator",
+  "version": "1.0.0",
+  "description": "MSA Services Orchestrator - 각 서비스의 독립적인 실행을 관리",
   "private": true,
-  "license": "UNLICENSED",
   "scripts": {
-    "build": "nest build",
-    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-    "start": "nest start",
-    "start:dev": "nest start --watch",
-    "start:debug": "nest start --debug --watch",
-    "start:prod": "node dist/main",
-    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "test:cov": "jest --coverage",
-    "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
-  },
-  "dependencies": {
-    "@nestjs/common": "^11.0.1",
-    "@nestjs/core": "^11.0.1",
-    "@nestjs/platform-express": "^11.0.1",
-    "reflect-metadata": "^0.2.2",
-    "rxjs": "^7.8.1"
+    "install:all": "cd apps/user-service && yarn install && cd ../../apps/post-service && yarn install && cd ../../apps/api-gateway && yarn install",
+    "build:all": "cd apps/user-service && yarn build && cd ../../apps/post-service && yarn build && cd ../../apps/api-gateway && yarn build",
+    "start:user": "cd apps/user-service && yarn start:dev",
+    "start:post": "cd apps/post-service && yarn start:dev",
+    "start:api": "cd apps/api-gateway && yarn start:dev",
+    "start:all": "concurrently -n \"USER,POST,API\" -c \"blue,green,yellow\" \"yarn start:user\" \"yarn start:post\" \"yarn start:api\"",
+    "start:prod:user": "cd apps/user-service && yarn start:prod",
+    "start:prod:post": "cd apps/post-service && yarn start:prod",
+    "start:prod:api": "cd apps/api-gateway && yarn start:prod",
+    "start:prod:all": "concurrently -n \"USER,POST,API\" -c \"blue,green,yellow\" \"yarn start:prod:user\" \"yarn start:prod:post\" \"yarn start:prod:api\"",
+    "test:user": "cd apps/user-service && yarn test",
+    "test:post": "cd apps/post-service && yarn test",
+    "test:api": "cd apps/api-gateway && yarn test",
+    "test:all": "yarn test:user && yarn test:post && yarn test:api",
+    "lint:user": "cd apps/user-service && yarn lint",
+    "lint:post": "cd apps/post-service && yarn lint",
+    "lint:api": "cd apps/api-gateway && yarn lint",
+    "lint:all": "yarn lint:user && yarn lint:post && yarn lint:api",
+    "clean:all": "rm -rf apps/user-service/node_modules apps/user-service/dist apps/post-service/node_modules apps/post-service/dist apps/api-gateway/node_modules apps/api-gateway/dist",
+    "setup": "yarn install:all && yarn build:all",
+    "dev": "yarn start:all",
+    "prod": "yarn build:all && yarn start:prod:all"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3.2.0",
-    "@eslint/js": "^9.18.0",
-    "@nestjs/cli": "^11.0.0",
-    "@nestjs/schematics": "^11.0.0",
-    "@nestjs/testing": "^11.0.1",
-    "@swc/cli": "^0.6.0",
-    "@swc/core": "^1.10.7",
-    "@types/express": "^5.0.0",
-    "@types/jest": "^29.5.14",
-    "@types/node": "^22.10.7",
-    "@types/supertest": "^6.0.2",
-    "eslint": "^9.18.0",
-    "eslint-config-prettier": "^10.0.1",
-    "eslint-plugin-prettier": "^5.2.2",
-    "globals": "^16.0.0",
-    "jest": "^29.7.0",
-    "prettier": "^3.4.2",
-    "source-map-support": "^0.5.21",
-    "supertest": "^7.0.0",
-    "ts-jest": "^29.2.5",
-    "ts-loader": "^9.5.2",
-    "ts-node": "^10.9.2",
-    "tsconfig-paths": "^4.2.0",
-    "typescript": "^5.7.3",
-    "typescript-eslint": "^8.20.0"
+    "concurrently": "^8.2.2"
   },
-  "jest": {
-    "moduleFileExtensions": [
-      "js",
-      "json",
-      "ts"
+  "workspaces": {
+    "packages": [
+      "apps/user-service",
+      "apps/post-service",
+      "apps/api-gateway"
     ],
-    "rootDir": "src",
-    "testRegex": ".*\\.spec\\.ts$",
-    "transform": {
-      "^.+\\.(t|j)s$": "ts-jest"
-    },
-    "collectCoverageFrom": [
-      "**/*.(t|j)s"
-    ],
-    "coverageDirectory": "../coverage",
-    "testEnvironment": "node"
+    "nohoist": [
+      "**/node_modules/**"
+    ]
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "yarn": ">=1.22.0"
   }
 }

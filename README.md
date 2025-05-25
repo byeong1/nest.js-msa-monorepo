@@ -1,98 +1,114 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# 🏗️ NestJS MSA (마이크로서비스 아키텍처)
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+완전히 독립적인 마이크로서비스들로 구성된 프로젝트입니다.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## 📁 프로젝트 구조
 
-## Description
-
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
-
-## Project setup
-
-```bash
-$ yarn install
+```
+nest.js-msa-monorepo/
+├── apps/
+│   ├── api-gateway/      # API 게이트웨이 (포트: 3000)
+│   ├── user-service/     # 사용자 관리 서비스 (포트: 3001)
+│   └── post-service/     # 게시글 관리 서비스 (포트: 3002)
+└── package.json          # 서비스 오케스트레이션
 ```
 
-## Compile and run the project
+## 🚀 실행 방법
+
+### **🎯 루트에서 통합 관리 (권장)**
 
 ```bash
-# development
-$ yarn run start
+# 1. 모든 서비스 의존성 설치
+yarn install:all
 
-# watch mode
-$ yarn run start:dev
+# 2. 모든 서비스 동시 실행 (개발 모드)
+yarn dev
+# 또는
+yarn start:all
 
-# production mode
-$ yarn run start:prod
+# 3. 개별 서비스 실행
+yarn start:user    # User Service만
+yarn start:post    # Post Service만
+yarn start:api     # API Gateway만
+
+# 4. 프로덕션 빌드 & 실행
+yarn prod
 ```
 
-## Run tests
+### **📋 기타 유용한 명령어**
 
 ```bash
-# unit tests
-$ yarn run test
+# 모든 서비스 빌드
+yarn build:all
 
-# e2e tests
-$ yarn run test:e2e
+# 모든 서비스 테스트
+yarn test:all
 
-# test coverage
-$ yarn run test:cov
+# 모든 서비스 린트
+yarn lint:all
+
+# 모든 서비스 클린
+yarn clean:all
+
+# 초기 설정 (의존성 설치 + 빌드)
+yarn setup
 ```
 
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+### **🔧 개별 서비스 실행 (필요시)**
 
 ```bash
-$ yarn install -g @nestjs/mau
-$ mau deploy
+# User Service
+cd apps/user-service
+yarn install
+yarn start:dev
+
+# Post Service
+cd apps/post-service
+yarn install
+yarn start:dev
+
+# API Gateway
+cd apps/api-gateway
+yarn install
+yarn start:dev
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+## 🔧 서비스 독립성
 
-## Resources
+- **완전 독립**: 각 서비스는 고유한 `package.json`, `node_modules` 보유
+- **독립 배포**: 서비스별로 개별 빌드/배포 가능
+- **기술 스택 자유도**: 서비스마다 다른 버전/라이브러리 사용 가능
+- **팀 독립성**: 서비스별로 다른 팀이 개발 가능
+- **통합 관리**: 루트에서 모든 서비스를 편리하게 관리
 
-Check out a few resources that may come in handy when working with NestJS:
+## 📡 서비스 간 통신
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+- **방식**: TCP Transport (NestJS Microservices)
+- **API Gateway**: 클라이언트 요청의 유일한 진입점
+- **인증**: JWT 토큰 기반
 
-## Support
+## 🔗 API 엔드포인트
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+### **사용자 관리**
 
-## Stay in touch
+- `POST /api/users/register` - 사용자 등록
+- `POST /api/users/login` - 로그인
+- `GET /api/users/profile` - 프로필 조회
+- `PUT /api/users/profile` - 프로필 수정
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+### **게시글 관리**
 
-## License
+- `POST /api/posts` - 게시글 작성
+- `GET /api/posts` - 게시글 목록 (페이징)
+- `GET /api/posts/:id` - 게시글 상세
+- `PUT /api/posts/:id` - 게시글 수정
+- `DELETE /api/posts/:id` - 게시글 삭제
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+## 🐳 Docker 배포 (향후 계획)
+
+각 서비스를 독립적인 Docker 컨테이너로 배포할 수 있습니다.
+
+```bash
+# 각 서비스별 Dockerfile 생성 예정
+# docker-compose.yml로 전체 시스템 관리 예정
+```
